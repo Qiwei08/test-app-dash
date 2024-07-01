@@ -35,6 +35,7 @@ def update_figure(selected_year, request=flask.request):
     filtered_df = df[df.year == selected_year]
     a = request.cookies.to_dict()
     print("******************", flush=True)
+    print(a, flush=True)
     print("User qui utilise l'app, c'est: ", flush=True)
     print(jwt.decode(a["SAAGIETOKENINTERNE"], options={"verify_signature": False})["preferred_username"])
     print("******************", flush=True)
