@@ -6,6 +6,8 @@ import plotly.express as px
 import os
 
 import pandas as pd
+import flask
+import jwt
 
 df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv')
 
@@ -29,8 +31,13 @@ app.layout = html.Div([
 @app.callback(
     Output('graph-with-slider', 'figure'),
     [Input('year-slider', 'value')])
-def update_figure(selected_year):
+def update_figure(selected_year, request=flask.request):
     filtered_df = df[df.year == selected_year]
+    a = request.cookies.to_dict()
+    print("******************", flush=True)
+    print("User qui utilise l'app, c'est: ", flush=True)
+    print(jwt.decode(a["SAAGIETOKENINTERNE"], options={"verify_signature": False})["preferred_username"])
+    print("******************", flush=True)
 
     fig = px.scatter(filtered_df, x="gdpPercap", y="lifeExp",
                      size="pop", color="continent", hover_name="country",
